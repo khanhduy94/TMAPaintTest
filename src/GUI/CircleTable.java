@@ -1,50 +1,40 @@
 package GUI;
 
-import java.util.List;
-
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class CircleTable extends AbstractTableModel {
-
- String[] columnNames = {"Position", "Radius"};
- Object[][] data;
- 
- public CircleTable(List<Shap> list) {
-  
-  int length = 0;
-  for (int i = 0; i < list.size(); i++) {
-   if ("circle".equals(list.get(i).getType())) {
-    length++;
-   }
-  }
-  data = new Object[length][2];
-  int i = 0;
-  for (Shap shap : list) {
-   if (shap.getType().equals("circle")) {
-    data[i][0] = "(" + shap.getX() + ", " + shap.getY() + ")";
-    data[i][1] = shap.getRadius();
-    i++;
-   }
-  }
- }
- 
- @Override
- public int getRowCount() {
-  return data.length;
- }
-
- @Override
- public int getColumnCount() {
-  return columnNames.length;
- }
-
- @Override
- public Object getValueAt(int rowIndex, int columnIndex) {
-  return data[rowIndex][columnIndex];
- }
- 
- public String getColumnName(int col) {
-  return columnNames[col];
- }
-
+	
+	private static final long serialVersionUID = 7531737054979827467L;
+	String[] columnNames = {"X","Y", "Radius"};
+	ArrayList<Object[]> data;
+	
+	
+	public CircleTable(){
+		this.data= new ArrayList<>();
+	}   
+	@Override
+	public int getRowCount() {
+		return data.size();
+	}
+	@Override
+	public int getColumnCount() {
+		return columnNames.length;
+	}
+	@Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		return data.get(rowIndex)[columnIndex] ;
+	}
+	@Override
+	public String getColumnName(int col) {
+		return columnNames[col];
+	}
+	public void addtbCircle(int x,int y,int radius){
+		Object[] o =new Object[]{x,y,radius};
+		data.add(o);
+	}
+	public Object[] deletetbCircle(int rowIndex){
+		Object[] o=data.remove(rowIndex);
+		return o;
+	}
 }

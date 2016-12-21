@@ -15,11 +15,7 @@ public class Shap {
 	 private int height;
 	 private int ShapeTYpe;
 	 private int stYle2D3D;
-	 private Graphics g;
-	 
-	 public Shap() {
-	  
-	 }
+	 private Graphics g;	 
 	 
 	 public Shap(int X, int Y, int radius, int ShapeTYpe, int stYle2D3D) {
 	  this.X = X;

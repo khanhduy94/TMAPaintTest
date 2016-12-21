@@ -1,36 +1,22 @@
 package GUI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 public class RectangleTable extends AbstractTableModel {
 
- String[] columnNames = {"Position", "Width", "Height"};
- Object[][] data;
+ String[] columnNames = {"X","Y", "Width", "Height"};
+ ArrayList<Object[]> data;
  
- public RectangleTable(List<Shap> list) {
-  int length = 0;
-  for (int i = 0; i < list.size(); i++) {
-   if ("rectangle".equals(list.get(i).getType())) {
-    length++;
-   }
-  }
-  data = new Object[length][3];
-  int i = 0;
-  for (Shap shap : list) {
-   if ("rectangle".equals(shap.getType())) {
-    data[i][0] = "(" + shap.getX() + ", " + shap.getY() + ")";
-    data[i][1] = shap.getWidth();
-    data[i][2] = shap.getHeight();
-    i++;
-   }
-  }
+ public RectangleTable() {
+	 this.data= new ArrayList<>();
  }
  
  @Override
  public int getRowCount() {
-  return data.length;
+  return data.size();
  }
 
  @Override
@@ -40,11 +26,18 @@ public class RectangleTable extends AbstractTableModel {
 
  @Override
  public Object getValueAt(int rowIndex, int columnIndex) {
-  return data[rowIndex][columnIndex];
+  return data.get(rowIndex)[columnIndex];
  }
  
  public String getColumnName(int col) {
   return columnNames[col];
  }
-
+ public void addtbRect(int x,int y,int Width, int Height){
+		Object[] o =new Object[]{x,y,Width,Height};
+		data.add(o);
+	}
+ public Object[] deletetbRect(int rowIndex){
+		Object[] o=data.remove(rowIndex);
+		return o;
+	}
 }

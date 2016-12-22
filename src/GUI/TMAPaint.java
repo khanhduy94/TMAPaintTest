@@ -56,11 +56,9 @@ public class TMAPaint extends JPanel {
  private Point last;
  private Point present;
 
- private int x;
- private int y;
 
- public static List<Shap> listShap;
- public Shap shap;
+ public static List<Shape> listShap;
+ public Shape shape;
  
  private boolean start =  true;
  
@@ -89,7 +87,7 @@ public class TMAPaint extends JPanel {
   lbCircle.setFont(new Font("Tahoma", Font.PLAIN, 12));
   panelCircle.add(lbCircle);
 
-  tbCircle = new JTable(new CircleTable(listShap));
+  tbCircle = new JTable(new CircleTable());
   tbCircle.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
   scrollCircle = new JScrollPane();
@@ -107,7 +105,7 @@ public class TMAPaint extends JPanel {
   lbRectangle.setFont(new Font("Tahoma", Font.PLAIN, 12));
   panelRectangle.add(lbRectangle);
 
-  tbRect = new JTable(new RectangleTable(listShap));
+  tbRect = new JTable(new RectangleTable());
   tbRect.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
   scrollRectangle = new JScrollPane();
@@ -156,9 +154,9 @@ public class TMAPaint extends JPanel {
       // remove all circle
       Graphics g = panelPaint.getGraphics();
       g.setColor(Color.darkGray);
-      for (Shap shap : listShap) {
-       if (shap.getType().equals("circle")) {
-        g.fillOval(shap.getX(), shap.getY(), shap.getRadius(), shap.getRadius());
+      for (Shape shape : listShap) {
+       if (shape.getType().equals("circle")) {
+        g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
        }
       }
 
@@ -170,9 +168,9 @@ public class TMAPaint extends JPanel {
       int x = Integer.valueOf(arrStr[0].trim());
       int y = Integer.valueOf(arrStr[1].trim());
       int radius = (int) tbCircle.getValueAt(row, 1);
-      for (Shap shap : listShap) {
-       if (shap.getX() == x && shap.getY() == y && shap.getRadius() == radius && shap.getType().equals("circle")) {
-        listShap.remove(shap);
+      for (Shape shape : listShap) {
+       if (shape.getX() == x && shape.getY() == y && shape.getRadius() == radius && shape.getType().equals("circle")) {
+        listShap.remove(shape);
         break;
        }
       }
@@ -184,14 +182,14 @@ public class TMAPaint extends JPanel {
       
       
       
-      for (Shap shap : listShap) {
-       if (shap.getType().equals("circle")) {
-        if (shap.getStyle2D3D().equals("D2")) {
+      for (Shape shape : listShap) {
+       if (shape.getType().equals("circle")) {
+        if (shape.getStyle2D3D().equals("D2")) {
          g.setColor(Color.WHITE);
         } else {
          g.setColor(Color.GREEN);
         }
-        g.fillOval(shap.getX(), shap.getY(), shap.getRadius(), shap.getRadius());
+        g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
         
        }
       }
@@ -199,9 +197,9 @@ public class TMAPaint extends JPanel {
       // remove all rectangle
       Graphics g = panelPaint.getGraphics();
       g.setColor(Color.darkGray);
-      for (Shap shap : listShap) {
-       if (shap.getType().equals("rectangle")) {
-        g.fillRect(shap.getX(), shap.getY(), shap.getWidth(), shap.getHeight());
+      for (Shape shape : listShap) {
+       if (shape.getType().equals("rectangle")) {
+        g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
        }
       }
       
@@ -214,9 +212,9 @@ public class TMAPaint extends JPanel {
       int y = Integer.valueOf(arrStr[1].trim());
       int width = (int) tbRect.getValueAt(row, 1);
       int height = (int) tbRect.getValueAt(row, 2);
-      for (Shap shap : listShap) {
-       if (shap.getX() == x && shap.getY() == y && shap.getWidth() == width && shap.getHeight() == height && shap.getType().equals("rectangle")) {
-        listShap.remove(shap);
+      for (Shape shape : listShap) {
+       if (shape.getX() == x && shape.getY() == y && shape.getWidth() == width && shape.getHeight() == height && shape.getType().equals("rectangle")) {
+        listShap.remove(shape);
         break;
        }
       }
@@ -226,14 +224,14 @@ public class TMAPaint extends JPanel {
       
       // draw again after delete one
       
-      for (Shap shap : listShap) {
-       if (shap.getStyle2D3D().equals("D2")) {
+      for (Shape shape : listShap) {
+       if (shape.getStyle2D3D().equals("D2")) {
         g.setColor(Color.WHITE);
        } else {
         g.setColor(Color.GREEN);
        }
-       if (shap.getType().equals("rectangle")) {
-        g.fillRect(shap.getX(), shap.getY(), shap.getWidth(), shap.getHeight());
+       if (shape.getType().equals("rectangle")) {
+        g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
        }
       }
      }
@@ -252,14 +250,14 @@ public class TMAPaint extends JPanel {
    @Override
    public void actionPerformed(ActionEvent e) {
     try {
-     // remove all shap
+     // remove all shape
      Graphics g = panelPaint.getGraphics();
      g.setColor(Color.darkGray);
-     for (Shap shap : listShap) {
-      if (shap.getType().equals("circle")) {
-       g.fillOval(shap.getX(), shap.getY(), shap.getRadius(), shap.getRadius());
+     for (Shape shape : listShap) {
+      if (shape.getType().equals("circle")) {
+       g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
       } else {
-       g.fillRect(shap.getX(), shap.getY(), shap.getWidth(), shap.getHeight());
+       g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
       }
      }
      
@@ -274,16 +272,16 @@ public class TMAPaint extends JPanel {
      scrollRectangle.setViewportView(tbRect);
 
      // draw again after delete one
-     for (Shap shap : listShap) {
-      if (shap.getStyle2D3D().equals("D2")) {
+     for (Shape shape : listShap) {
+      if (shape.getStyle2D3D().equals("D2")) {
        g.setColor(Color.WHITE);
       } else {
        g.setColor(Color.GREEN);
       }
-      if (shap.getType().equals("circle")) {
-       g.fillOval(shap.getX(), shap.getY(), shap.getRadius(), shap.getRadius());
+      if (shape.getType().equals("circle")) {
+       g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
       } else {
-       g.fillRect(shap.getX(), shap.getY(), shap.getWidth(), shap.getHeight());
+       g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
       }
      }
      
@@ -305,14 +303,14 @@ public class TMAPaint extends JPanel {
    @Override
    public void actionPerformed(ActionEvent e) {
     
-    // remove all shap
+    // remove all shape
     Graphics g = panelPaint.getGraphics();
     g.setColor(Color.darkGray);
-    for (Shap shap : listShap) {
-     if (shap.getType().equals("circle")) {
-      g.fillOval(shap.getX(), shap.getY(), shap.getRadius(), shap.getRadius());
+    for (Shape shape : listShap) {
+     if (shape.getType().equals("circle")) {
+      g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
      } else {
-      g.fillRect(shap.getX(), shap.getY(), shap.getWidth(), shap.getHeight());
+      g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
      }
     }
     
@@ -326,16 +324,16 @@ public class TMAPaint extends JPanel {
     scrollRectangle.setViewportView(tbRect);
 
     // draw again after delete one
-    for (Shap shap : listShap) {
-     if (shap.getStyle2D3D().equals("D2")) {
+    for (Shape shape : listShap) {
+     if (shape.getStyle2D3D().equals("D2")) {
       g.setColor(Color.WHITE);
      } else {
       g.setColor(Color.GREEN);
      }
-     if (shap.getType().equals("circle")) {
-      g.fillOval(shap.getX(), shap.getY(), shap.getRadius(), shap.getRadius());
+     if (shape.getType().equals("circle")) {
+      g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
      } else {
-      g.fillRect(shap.getX(), shap.getY(), shap.getWidth(), shap.getHeight());
+      g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
      }
     }
     
@@ -409,39 +407,34 @@ public class TMAPaint extends JPanel {
     if (Status.btChoice == Status.ADD) {
      int dx = present.x - last.x;
      int dy = present.y - last.y;
-     x = last.x;
-     y = last.y;
+     int x = last.x;
+     int y = last.y;
      int radius = (int) Math.sqrt(dx * dx + dy * dy);
 
-     Graphics g = panelPaint.getGraphics();
-     if (Status.style2D3D == Status.D2) {
-      g.setColor(Color.WHITE);
-     } else {
-      g.setColor(Color.GREEN);
-     }
-
+     
      // draw circle
-     if (Status.styleDraw == Status.DRAW_CIRCLE) {
-      g.fillOval(x, y, radius, radius);
-      shap = new Shap(x, y, radius, "circle", Status.style2D3D == Status.D2 ? "D2" : "D3");
-      listShap.add(shap);
+     
+     
+      shape = new Shape(x, y, radius, "circle", Status.style2D3D == Status.D2 ? "D2" : "D3");
+      listShap.add(shape);
       tbCircle = new JTable(new CircleTable(listShap));
       scrollCircle.setViewportView(tbCircle);
       
       undoManager.undoableEditHappened(
-        new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shap)));
-     } else { // draw rectangle
+        new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));
+      
+     draw rectangle
       g.fillRect(x, y, dx, dy);
-      shap = new Shap(x, y, dx, dy, "rectangle", Status.style2D3D == Status.D2 ? "D2" : "D3");
-      listShap.add(shap);
+      shape = new Shape(x, y, dx, dy, "rectangle", Status.style2D3D == Status.D2 ? "D2" : "D3");
+      listShap.add(shape);
       
       tbRect = new JTable(new RectangleTable(listShap));
       scrollRectangle.setViewportView(tbRect);
       
       undoManager.undoableEditHappened(
-        new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shap)));
-     }
-    }
+        new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));
+     
+    
     btUndo.setEnabled(undoManager.canUndo());
     btRedo.setEnabled(undoManager.canRedo());
    }
@@ -497,7 +490,7 @@ public class TMAPaint extends JPanel {
   panelDraw.add(panelPaint);
   
   undoManager.undoableEditHappened(
-    new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shap)));
+    new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));
   btUndo.setEnabled(undoManager.canUndo());
   btRedo.setEnabled(undoManager.canRedo());
 

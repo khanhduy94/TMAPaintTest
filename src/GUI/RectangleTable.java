@@ -1,13 +1,14 @@
 package GUI;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
+public class RectangleTable extends ShapeTable {
 
-public class RectangleTable extends AbstractTableModel {
-
- String[] columnNames = {"X","Y", "Width", "Height"};
+ /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+String[] columnNames = {"X","Y", "Width", "Height"};
  ArrayList<Object[]> data;
  
  public RectangleTable() {
@@ -32,12 +33,12 @@ public class RectangleTable extends AbstractTableModel {
  public String getColumnName(int col) {
   return columnNames[col];
  }
- public void addtbRect(int x,int y,int Width, int Height){
-		Object[] o =new Object[]{x,y,Width,Height};
+ public void addtb(Object[] o){		
 		data.add(o);
 	}
- public Object[] deletetbRect(int rowIndex){
+ public Object[] deletetb(int rowIndex){
 		Object[] o=data.remove(rowIndex);
 		return o;
 	}
+ 
 }

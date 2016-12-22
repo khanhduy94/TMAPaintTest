@@ -1,9 +1,8 @@
 package GUI;
 
 import java.util.ArrayList;
-import javax.swing.table.AbstractTableModel;
 
-public class CircleTable extends AbstractTableModel {
+public class CircleTable extends ShapeTable {
 	
 	private static final long serialVersionUID = 7531737054979827467L;
 	String[] columnNames = {"X","Y", "Radius"};
@@ -29,11 +28,10 @@ public class CircleTable extends AbstractTableModel {
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
-	public void addtbCircle(int x,int y,int radius){
-		Object[] o =new Object[]{x,y,radius};
+	public void addtb(Object[] o ){		
 		data.add(o);
 	}
-	public Object[] deletetbCircle(int rowIndex){
+	public Object[] deletetb(int rowIndex){
 		Object[] o=data.remove(rowIndex);
 		return o;
 	}

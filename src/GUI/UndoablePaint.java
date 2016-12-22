@@ -6,12 +6,12 @@ import javax.swing.undo.AbstractUndoableEdit;
 
 public class UndoablePaint extends AbstractUndoableEdit {
  
- protected List<Shap> listShap;
- protected Shap shap;
+ protected List<Shape> listShap;
+ protected Shape shape;
  
- public UndoablePaint(List<Shap> listShap, Shap shap) {
+ public UndoablePaint(List<Shape> listShap, Shape shape) {
   this.listShap = listShap;
-  this.shap = shap;
+  this.shape = shape;
  }
  
  @Override
@@ -19,14 +19,14 @@ public class UndoablePaint extends AbstractUndoableEdit {
   
   if (!listShap.isEmpty()) {
    super.undo();
-   listShap.remove(shap);
+   listShap.remove(shape);
   }
  }
  
  @Override
  public void redo() {
   super.redo();
-  listShap.add(shap);
+  listShap.add(shape);
  }
 
 }

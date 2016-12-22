@@ -94,22 +94,23 @@ public class Shape {
 		 this.setStyleShape();
 		 switch(ShapeTYpe){
 		 case 1: 
-			 g.fillOval(X, Y, radius, radius);
+			 g.drawOval(X, Y, radius, radius);
 			 break;
 		 case 2:
-			 g.fillRect(X, Y, width, height);
+			 g.drawRect(X, Y, width, height);
 			 break;
 		 }			 
 	 }
 	 public void deleteShape(JPanel panelPaint){
 		 g = panelPaint.getGraphics();
 		 g.setColor(Color.WHITE);
+		 
 		 switch(ShapeTYpe){
 		 case 1: 
-			 g.fillOval(X, Y, radius, radius);
+			 g.drawOval(X, Y, radius, radius);
 			 break;
 		 case 2:
-			 g.fillRect(X, Y, width, height);
+			 g.clearRect(X, Y, width, height);
 			 break;
 		 }		
 	 }

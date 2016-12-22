@@ -147,11 +147,12 @@ public class TMAPaint extends JPanel {
     if (!listShap.isEmpty()) {
      if (tbCircle.getSelectedRow() != -1) {
       // remove all circle
-    	Shape shape= listShap.get(listShap.size()-1);
+    	 int row = tbCircle.getSelectedRow();
+    	Shape shape= listShap.get(row);
     	shape.deleteShape(panelPaint);
-    	listShap.remove(listShap.size());
+    	listShap.remove(row);
       // remove from table circle
-      int row = tbCircle.getSelectedRow();
+      
      
       if(Status.styleDraw==Status.DRAW_CIRCLE){
     	  tbCircle = new JTable(shape.deleteTable(row));
@@ -159,7 +160,7 @@ public class TMAPaint extends JPanel {
       }
       else {
     	  tbRect = new JTable(shape.deleteTable(row));
-    	  scrollCircle.setViewportView(tbRect);
+    	  scrollRectangle.setViewportView(tbRect);
       	}	        
      }}}
   });
@@ -241,7 +242,7 @@ public class TMAPaint extends JPanel {
      // draw circle
      int[] infor = {x,y,radius,dx,dy};
      Shape shape = new Shape(infor,Status.styleDraw,Status.style2D3D);
-     shape.drawShape(panelDraw);     
+     shape.drawShape(panelPaint);     
       listShap.add(shape);
       if(Status.styleDraw==Status.DRAW_CIRCLE){
     	  tbCircle = new JTable(shape.addTable());

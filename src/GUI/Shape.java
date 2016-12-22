@@ -16,18 +16,20 @@ public class Shape {
 	 private int ShapeTYpe;
 	 private int stYle2D3D;
 	 private Graphics g;	 
+	 private int[] info;
 	 private static RectangleTable tbRect= new RectangleTable() ;
-	 private static CircleTable tbCircle= new CircleTable();
-	 private vector<int> Info;
+	 private static CircleTable tbCircle= new CircleTable();	
 	 
-	 public Shape(int X, int Y, int radius, int ShapeTYpe, int stYle2D3D) {
-	  this.X = X;
-	  this.Y = Y;
-	  this.radius = radius;
+	 public Shape(int[] infor, int ShapeTYpe, int stYle2D3D) {
+	  this.X = infor[0];
+	  this.Y = infor[1];
+	  this.radius = infor[2];
+	  this.width = infor[3];
+	  this.height = infor[4];
 	  this.ShapeTYpe = ShapeTYpe;
 	  this.stYle2D3D = stYle2D3D;
-	 }
-	 
+	  this.info=infor;
+	 }	 
 	 public Shape(int X, int Y, int width, int height, int tYpe, int stYle2D3D) {
 	  this.X = X;
 	  this.Y = Y;
@@ -36,7 +38,6 @@ public class Shape {
 	  this.ShapeTYpe = tYpe;
 	  this.stYle2D3D = stYle2D3D;
 	 }
-
 	 public int getX() {
 	  return X;
 	 }
@@ -100,8 +101,8 @@ public class Shape {
 			 break;
 		 }			 
 	 }
-	 public void deleteShape(JPanel paintPanel){
-		 g = paintPanel.getGraphics();
+	 public void deleteShape(JPanel panelPaint){
+		 g = panelPaint.getGraphics();
 		 g.setColor(Color.WHITE);
 		 switch(ShapeTYpe){
 		 case 1: 

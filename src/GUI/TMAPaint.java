@@ -55,13 +55,8 @@ public class TMAPaint extends JPanel {
 
  private Point last;
  private Point present;
-
-
- public static List<Shape> listShap;
- public Shape shape;
- 
- private boolean start =  true;
- 
+ public static List<Shape> listShap; 
+ private boolean start =  true; 
  UndoManager undoManager = new UndoManager();
 
  public TMAPaint() {
@@ -152,245 +147,76 @@ public class TMAPaint extends JPanel {
     if (!listShap.isEmpty()) {
      if (tbCircle.getSelectedRow() != -1) {
       // remove all circle
-      Graphics g = panelPaint.getGraphics();
-      g.setColor(Color.darkGray);
-      for (Shape shape : listShap) {
-       if (shape.getType().equals("circle")) {
-        g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
-       }
-      }
-
+    	Shape shape= listShap.get(listShap.size()-1);
+    	shape.deleteShape(panelPaint);
+    	listShap.remove(listShap.size());
       // remove from table circle
       int row = tbCircle.getSelectedRow();
-      String str = (String) tbCircle.getValueAt(row, 0);
-      str = str.substring(1, str.length() - 1);
-      String[] arrStr = str.split(",");
-      int x = Integer.valueOf(arrStr[0].trim());
-      int y = Integer.valueOf(arrStr[1].trim());
-      int radius = (int) tbCircle.getValueAt(row, 1);
-      for (Shape shape : listShap) {
-       if (shape.getX() == x && shape.getY() == y && shape.getRadius() == radius && shape.getType().equals("circle")) {
-        listShap.remove(shape);
-        break;
-       }
+     
+      if(Status.styleDraw==Status.DRAW_CIRCLE){
+    	  tbCircle = new JTable(shape.deleteTable(row));
+    	  scrollCircle.setViewportView(tbCircle);
       }
-
-      tbCircle = new JTable(new CircleTable(listShap));
-      scrollCircle.setViewportView(tbCircle);
-
-      // draw again after delete one
-      
-      
-      
-      for (Shape shape : listShap) {
-       if (shape.getType().equals("circle")) {
-        if (shape.getStyle2D3D().equals("D2")) {
-         g.setColor(Color.WHITE);
-        } else {
-         g.setColor(Color.GREEN);
-        }
-        g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
-        
-       }
-      }
-     } else if (tbRect.getSelectedRow() != -1) {
-      // remove all rectangle
-      Graphics g = panelPaint.getGraphics();
-      g.setColor(Color.darkGray);
-      for (Shape shape : listShap) {
-       if (shape.getType().equals("rectangle")) {
-        g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-       }
-      }
-      
-      // remove from table
-      int row = tbRect.getSelectedRow();
-      String str = (String) tbRect.getValueAt(row, 0);
-      str = str.substring(1, str.length() - 1);
-      String[] arrStr = str.split(",");
-      int x = Integer.valueOf(arrStr[0].trim());
-      int y = Integer.valueOf(arrStr[1].trim());
-      int width = (int) tbRect.getValueAt(row, 1);
-      int height = (int) tbRect.getValueAt(row, 2);
-      for (Shape shape : listShap) {
-       if (shape.getX() == x && shape.getY() == y && shape.getWidth() == width && shape.getHeight() == height && shape.getType().equals("rectangle")) {
-        listShap.remove(shape);
-        break;
-       }
-      }
-
-      tbRect = new JTable(new RectangleTable(listShap));
-      scrollRectangle.setViewportView(tbRect);
-      
-      // draw again after delete one
-      
-      for (Shape shape : listShap) {
-       if (shape.getStyle2D3D().equals("D2")) {
-        g.setColor(Color.WHITE);
-       } else {
-        g.setColor(Color.GREEN);
-       }
-       if (shape.getType().equals("rectangle")) {
-        g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-       }
-      }
-     }
-    }
-   }
-
+      else {
+    	  tbRect = new JTable(shape.deleteTable(row));
+    	  scrollCircle.setViewportView(tbRect);
+      	}	        
+     }}}
   });
-  panelButton.add(btRemove);
-  
+  panelButton.add(btRemove); 
   
 
   btUndo = new JButton("Undo");
-  btUndo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-  btUndo.addActionListener(new ActionListener() {
-
-   @Override
-   public void actionPerformed(ActionEvent e) {
-    try {
-     // remove all shape
-     Graphics g = panelPaint.getGraphics();
-     g.setColor(Color.darkGray);
-     for (Shape shape : listShap) {
-      if (shape.getType().equals("circle")) {
-       g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
-      } else {
-       g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-      }
-     }
-     
-     undoManager.undo();
-     
-     
-     // update table
-     tbCircle = new JTable(new CircleTable(listShap));
-     scrollCircle.setViewportView(tbCircle);
-     
-     tbRect = new JTable(new RectangleTable(listShap));
-     scrollRectangle.setViewportView(tbRect);
-
-     // draw again after delete one
-     for (Shape shape : listShap) {
-      if (shape.getStyle2D3D().equals("D2")) {
-       g.setColor(Color.WHITE);
-      } else {
-       g.setColor(Color.GREEN);
-      }
-      if (shape.getType().equals("circle")) {
-       g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
-      } else {
-       g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-      }
-     }
-     
-     btUndo.setEnabled(undoManager.canUndo());
-     btRedo.setEnabled(undoManager.canRedo());
-     
-    } catch(Exception ex) {
-     
-    }
-   }
-
-  });
+  btUndo.setFont(new Font("Tahoma", Font.PLAIN, 14));  
   panelButton.add(btUndo);
 
   btRedo = new JButton("Redo");
-  btRedo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-  btRedo.addActionListener(new ActionListener() {
-
-   @Override
-   public void actionPerformed(ActionEvent e) {
-    
-    // remove all shape
-    Graphics g = panelPaint.getGraphics();
-    g.setColor(Color.darkGray);
-    for (Shape shape : listShap) {
-     if (shape.getType().equals("circle")) {
-      g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
-     } else {
-      g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-     }
-    }
-    
-    undoManager.redo();
-    
-    // update table
-    tbCircle = new JTable(new CircleTable(listShap));
-    scrollCircle.setViewportView(tbCircle);
-    
-    tbRect = new JTable(new RectangleTable(listShap));
-    scrollRectangle.setViewportView(tbRect);
-
-    // draw again after delete one
-    for (Shape shape : listShap) {
-     if (shape.getStyle2D3D().equals("D2")) {
-      g.setColor(Color.WHITE);
-     } else {
-      g.setColor(Color.GREEN);
-     }
-     if (shape.getType().equals("circle")) {
-      g.fillOval(shape.getX(), shape.getY(), shape.getRadius(), shape.getRadius());
-     } else {
-      g.fillRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-     }
-    }
-    
-    btUndo.setEnabled(undoManager.canUndo());
-    btRedo.setEnabled(undoManager.canRedo());
-
-   }
-
-  });
+  btRedo.setFont(new Font("Tahoma", Font.PLAIN, 14));  
   panelButton.add(btRedo);
+  
 
   btPrint = new JButton("Print");
   btPrint.setFont(new Font("Tahoma", Font.PLAIN, 14));
   btPrint.addActionListener(new ActionListener() {
-
    @Override
    public void actionPerformed(ActionEvent e) {
     // TODO Auto-generated method stub
-
    }
-
   });
   panelButton.add(btPrint);
+  
 
   bt3D = new JButton("3D");
   bt3D.setFont(new Font("Tahoma", Font.PLAIN, 14));
   bt3D.addActionListener(new ActionListener() {
-
    @Override
    public void actionPerformed(ActionEvent e) {
     bt2D.setEnabled(true);
     bt3D.setEnabled(false);
     Status.style2D3D = Status.D3;
    }
-
   });
   panelButton.add(bt3D);
+  
 
   bt2D = new JButton("2D");
   bt2D.setFont(new Font("Tahoma", Font.PLAIN, 14));
   bt2D.setEnabled(false);
   bt2D.addActionListener(new ActionListener() {
-
    @Override
    public void actionPerformed(ActionEvent e) {
     bt2D.setEnabled(false);
     bt3D.setEnabled(true);
     Status.style2D3D = Status.D2;
    }
-
   });
   panelButton.add(bt2D);
+  
 
   panelPaint = new JPanel();
   panelPaint.setBorder(BorderFactory.createLineBorder(Color.red));
   panelPaint.setLayout(new GridLayout());
-  panelPaint.setBackground(Color.darkGray);
+  panelPaint.setBackground(Color.WHITE);
   panelPaint.setPreferredSize(new Dimension(700, 360));
   panelPaint.addMouseListener(new MouseAdapter() {
    @Override
@@ -413,30 +239,26 @@ public class TMAPaint extends JPanel {
 
      
      // draw circle
-     
-     
-      shape = new Shape(x, y, radius, "circle", Status.style2D3D == Status.D2 ? "D2" : "D3");
+     int[] infor = {x,y,radius,dx,dy};
+     Shape shape = new Shape(infor,Status.styleDraw,Status.style2D3D);
+     shape.drawShape(panelDraw);     
       listShap.add(shape);
-      tbCircle = new JTable(new CircleTable(listShap));
-      scrollCircle.setViewportView(tbCircle);
+      if(Status.styleDraw==Status.DRAW_CIRCLE){
+    	  tbCircle = new JTable(shape.addTable());
+    	  scrollCircle.setViewportView(tbCircle);
+      }
+      else {
+    	  tbRect = new JTable(shape.addTable());
+    	  scrollCircle.setViewportView(tbRect);
+      }	
       
-      undoManager.undoableEditHappened(
-        new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));
-      
-     draw rectangle
-      g.fillRect(x, y, dx, dy);
-      shape = new Shape(x, y, dx, dy, "rectangle", Status.style2D3D == Status.D2 ? "D2" : "D3");
-      listShap.add(shape);
-      
-      tbRect = new JTable(new RectangleTable(listShap));
-      scrollRectangle.setViewportView(tbRect);
-      
-      undoManager.undoableEditHappened(
-        new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));
      
-    
-    btUndo.setEnabled(undoManager.canUndo());
-    btRedo.setEnabled(undoManager.canRedo());
+      
+     // undoManager.undoableEditHappened(new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));  
+     
+    }
+    //btUndo.setEnabled(undoManager.canUndo());
+    //btRedo.setEnabled(undoManager.canRedo());
    }
 
    @Override
@@ -489,10 +311,9 @@ public class TMAPaint extends JPanel {
   });
   panelDraw.add(panelPaint);
   
-  undoManager.undoableEditHappened(
-    new UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));
-  btUndo.setEnabled(undoManager.canUndo());
-  btRedo.setEnabled(undoManager.canRedo());
+  //undoManager.undoableEditHappened(ew UndoableEditEvent(panelPaint, new UndoablePaint(listShap, shape)));
+ // btUndo.setEnabled(undoManager.canUndo());
+ // btRedo.setEnabled(undoManager.canRedo());
 
  }
 
